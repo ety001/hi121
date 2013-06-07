@@ -6,6 +6,4 @@ $spConfig = array(
 );
 $apiConfig = include_once('./config/apiConfig.php');
 require(SP_PATH."/SpeedPHP.php");
-
-dump($apiConfig);
 spRun();

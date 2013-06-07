@@ -46,7 +46,7 @@ require_once 'HttpRequestService.class.php';
 		parent::__construct();
 		
 		$this->_config = $config;
-		
+		var_dump($this->_config);
 		if(empty($this->_config->APIURL) || empty($this->_config->APIKey) || empty($this->_config->SecretKey)){
 			throw new exception('Invalid API URL or API key or Secret key, please check config.inc.php');
 		}

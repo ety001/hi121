@@ -1,5 +1,5 @@
 <?php
-$apiConfig = array(
+return array(
 	'renren' => array(
 		'api' => '',
 		'secret' => ''

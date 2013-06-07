@@ -4,6 +4,8 @@ define("SP_PATH",dirname(__FILE__).'/SpeedPHP');
 $spConfig = array(
 
 );
+$apiConfig = include_once('./config/apiConfig.php');
 require(SP_PATH."/SpeedPHP.php");
-import('./config/apiConfig.php');
+
+dump($apiConfig);
 spRun();

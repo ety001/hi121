@@ -2,6 +2,10 @@
 class main extends spController
 {
 	function index(){
+		$this->display('main/index.html');
+	}
+
+	function login(){
 		global $apiConfig;
 		$_SESSION['state'] = md5(uniqid(rand(), TRUE)); //CSRF protection
 		$this->info = array(
@@ -9,7 +13,7 @@ class main extends spController
 			'client_id' => $apiConfig['renren']['ClientID'],
 			'redirect_uri' => $apiConfig['renren']['RedirectURI']
 		);
-		$this->display('main/index.html');
+		$this->display('main/login.html');
 	}
 
 	function regAccess(){

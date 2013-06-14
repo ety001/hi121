@@ -2,6 +2,14 @@
 define("APP_PATH",dirname(__FILE__));
 define("SP_PATH",dirname(__FILE__).'/SpeedPHP');
 $spConfig = array(
+	"db" => array(
+        'driver' => 'mysql',
+        'host' => 'localhost',
+        'login' => 'root',
+        'password' => '',
+        'database' => 'club121',
+        'prefix' => 'club121_'
+    ),
 	'view' => array( // 视图配置
         'enabled' => TRUE, // 开启视图
         'config' =>array(

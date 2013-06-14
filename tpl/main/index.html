@@ -1,8 +1,10 @@
+<!DOCTYPE HTML>
 <html>
 <head>
 	<title>club121</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
-	<div><a href="https://graph.renren.com/oauth/authorize?client_id=<?php echo $this->api_key;?>&redirect_uri=hi121.net&response_type=code" target="_blank">人人网</a></div>
+	<div><a href="https://graph.renren.com/oauth/authorize?client_id=<?php echo $info['client_id'];?>&redirect_uri=<?php echo urlencode($info['redirect_uri']);?>&response_type=code&scope=read_user_feed admin_page publish_feed&state=<?php echo $info['state'];?>" target="_blank"><img src="/public/images/renren_dark.png" /></a></div>
 </body>
 </html>

@@ -6,7 +6,11 @@
 </head>
 <body>
 	<div>
-		<form action="<?php spUrl('main','regSave');?>"></form>
+		<form action="<?php echo spUrl('main','regSave');?>">
+			人人名称：<?php echo $renren_name;?><br />
+			Nick Name:<input type="text" name="nickname" value="" /><br />
+			<input type="submit" value="submit" />
+		</form>
 	</div>
 </body>
 </html>

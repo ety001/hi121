@@ -1,9 +1,11 @@
 <?php
 return array(
 	'renren' => array(
-		'APIKey' => '39ca00577c3b47aa9140c89319938b15',
-		'SecretKey' => '694235c392734c168fdbdf16ae09df1e',
+		'ClientID' => '97468',
+		'APIKey' => '86fddbfed23b4d93a68fba701a191264',
+		'SecretKey' => '55214f3539444d77a16b03a47fc170f4',
 		'APIURL' => 'http://api.renren.com/restserver.do',
+		'RedirectURI' => 'http://ety001.kmdns.net:800/index.php?c=main&a=accesstoken',
 		'APIVersion' => '1.0',
 		'decodeFormat' => 'json'
 		),

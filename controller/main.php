@@ -33,8 +33,9 @@ class main extends spController
      		$params = json_decode($response);
      		$userModel = spClass('m_user');
      		$userInfo = $userModel->findAll('renren_id="'.$params->user->id.'"');
-     		if($userInfo['id']){
+     		if($userInfo[0]['id']){
      			$this->success('登录成功', spUrl('main', 'index'));
+     			return;
      		} else {
      			$_SESSION[$code] = $params;
      			$this->renren_name = $params->user->name;
@@ -58,7 +59,7 @@ class main extends spController
 				$renrenInfo = $_SESSION[$code];
 			}
 			$nickname = $_POST['nickname'];
-			$renrenID = (int)$_POST['renren_id'];
+			$renrenID = $renrenInfo->user->id;
 			$userModel = spClass('m_user');
 			if($userModel->findAll('nickname="'.$nickname.'"')){
 				$this->error('nickname已经存在了', spUrl('main','login'));

@@ -20,8 +20,9 @@ class main extends spController
 		$code = $_GET["code"];
 		if(!$code){
 			$this->error('本站只接受第三方帐号注册和登录', spUrl('main', 'index'));
+			return;
 		}
-		if($_REQUEST['state'] == $_SESSION['state']) {
+		if($_REQUEST['state'] == $_SESSION['state']) { //CSRF protection
 			global $apiConfig;
 			$grant_type="authorization_code";  //支持的授权类型
 			$token_url = "https://graph.renren.com/oauth/token?"
@@ -30,17 +31,61 @@ class main extends spController
      		$response = @file_get_contents($token_url);
      		$params = null;
      		$params = json_decode($response);
-     		$_SESSION[$code] = $params;
-     		$this->renren_name = $params->user->name;
-     		$this->renren_code = $code;
-     		$this->display('main/regaccess.html');
-			
+     		$userModel = spClass('m_user');
+     		$userInfo = $userModel->findAll('renren_id="'.$params->user->id.'"');
+     		if($userInfo['id']){
+     			$this->success('登录成功', spUrl('main', 'index'));
+     		} else {
+     			$_SESSION[$code] = $params;
+     			$this->renren_name = $params->user->name;
+     			$this->renren_code = $code;
+     			$this->csrf = $_SESSION['state'];
+     			$this->display('main/regaccess.html');
+     		}
 		} else {
 			$this->error('请不要尝试站外提交数据', spUrl('main', 'index'));
+			return;
 		}
 	}
 
 	function regSave(){
+		if($_REQUEST['state'] == $_SESSION['state']){
+			$code = $_POST['renren_code'];
+			if(!$_SESSION[$code]){
+				$this->error('错误的renren_code值', spUrl('main', 'index'));
+				return;
+			} else {
+				$renrenInfo = $_SESSION[$code];
+			}
+			$nickname = $_POST['nickname'];
+			$renrenID = (int)$_POST['renren_id'];
+			$userModel = spClass('m_user');
+			if($userModel->findAll('nickname="'.$nickname.'"')){
+				$this->error('nickname已经存在了', spUrl('main','login'));
+				return;
+			}
+			$userInfo = array(
+				'nickname' => $nickname,
+				'renren_id' => $renrenID
+			);
+			$uid = $userModel->create($userInfo);
+			if($uid){
+				$renrenConnectModel = spClass('m_renrenConnect');
+				$expiresTime = time() + $renrenInfo->expires_in; 
+				$renrenInfo = array(
+					'uid' => $uid,
+					'access_token' => $renrenInfo->access_token,
+					'refresh_token' => $renrenInfo->refresh_token,
+					'expires_time' => $expiresTime
+				);
+				$renrenConnectModel->create($renrenInfo);
+				$this->success('注册成功',spUrl('task', 'index'));
+				return;
+			}
+		} else {
+			$this->error('请不要尝试站外提交数据', spUrl('main', 'index'));
+			return;
+		}
 
 	}
 }

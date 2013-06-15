@@ -6,7 +6,7 @@ $spConfig = array(
         'driver' => 'mysql',
         'host' => 'localhost',
         'login' => 'root',
-        'password' => '',
+        'password' => 'woqimm',
         'database' => 'club121',
         'prefix' => 'club121_'
     ),

@@ -1,8 +1,8 @@
 <?php
-class main extends spController
+class connect extends spController
 {
 	function index(){
-		$this->display('main/index.html');
+		$this->display('connect/index.html');
 	}
 
 	function login(){
@@ -13,13 +13,13 @@ class main extends spController
 			'client_id' => $apiConfig['renren']['ClientID'],
 			'redirect_uri' => $apiConfig['renren']['RedirectURI']
 		);
-		$this->display('main/login.html');
+		$this->display('connect/login.html');
 	}
 
 	function regAccess(){
 		$code = $_GET["code"];
 		if(!$code){
-			$this->error('本站只接受第三方帐号注册和登录', spUrl('main', 'index'));
+			$this->error('本站只接受第三方帐号注册和登录', spUrl('connect', 'index'));
 			return;
 		}
 		if($_REQUEST['state'] == $_SESSION['state']) { //CSRF protection
@@ -34,17 +34,17 @@ class main extends spController
      		$userModel = spClass('m_user');
      		$userInfo = $userModel->findAll('renren_id="'.$params->user->id.'"');
      		if($userInfo[0]['id']){
-     			$this->success('登录成功', spUrl('main', 'index'));
+     			$this->success('登录成功', spUrl('connect', 'index'));
      			return;
      		} else {
      			$_SESSION[$code] = $params;
      			$this->renren_name = $params->user->name;
      			$this->renren_code = $code;
      			$this->csrf = $_SESSION['state'];
-     			$this->display('main/regaccess.html');
+     			$this->display('connect/regaccess.html');
      		}
 		} else {
-			$this->error('请不要尝试站外提交数据', spUrl('main', 'index'));
+			$this->error('请不要尝试站外提交数据', spUrl('connect', 'index'));
 			return;
 		}
 	}
@@ -53,7 +53,7 @@ class main extends spController
 		if($_REQUEST['state'] == $_SESSION['state']){
 			$code = $_POST['renren_code'];
 			if(!$_SESSION[$code]){
-				$this->error('错误的renren_code值', spUrl('main', 'index'));
+				$this->error('错误的renren_code值', spUrl('connect', 'index'));
 				return;
 			} else {
 				$renrenInfo = $_SESSION[$code];
@@ -62,7 +62,7 @@ class main extends spController
 			$renrenID = $renrenInfo->user->id;
 			$userModel = spClass('m_user');
 			if($userModel->findAll('nickname="'.$nickname.'"')){
-				$this->error('nickname已经存在了', spUrl('main','login'));
+				$this->error('nickname已经存在了', spUrl('connect','login'));
 				return;
 			}
 			$userInfo = array(
@@ -84,7 +84,7 @@ class main extends spController
 				return;
 			}
 		} else {
-			$this->error('请不要尝试站外提交数据', spUrl('main', 'index'));
+			$this->error('请不要尝试站外提交数据', spUrl('connect', 'index'));
 			return;
 		}
 

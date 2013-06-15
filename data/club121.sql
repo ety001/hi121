@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: 127.0.0.1
--- 生成日期: 2013 年 06 月 15 日 05:32
+-- 生成日期: 2013 年 06 月 15 日 18:47
 -- 服务器版本: 5.6.10
 -- PHP 版本: 5.3.15
 
@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `club121_renren_connect` (
   `id` int(11) NOT NULL,
+  `uid` int(11) NOT NULL COMMENT 'user_id',
   `access_token` text NOT NULL,
   `refresh_token` text NOT NULL,
   `expires_time` int(11) NOT NULL

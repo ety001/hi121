@@ -6,12 +6,13 @@
 </head>
 <body>
 	<div>
-		<form action="<?php echo spUrl('main','regSave');?>" action="post">
+		<form action="<?php echo spUrl('main','regSave');?>" method="post">
 			您当前还没有注册121部落，并且正在使用人人网作为第三方帐号登录本站<br />
 			人人名称：<?php echo $renren_name;?><br />
 			输入一个昵称，即可注册成功<br />
 			Nick Name:<input type="text" name="nickname" value="" /><br />
 			<input type="hidden" name="renren_code" value="<?php echo $renren_code;?>" />
+			<input type="hidden" name="state" value="<?php echo $csrf;?>" />
 			<input type="submit" value="submit" />
 		</form>
 	</div>

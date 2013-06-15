@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: 127.0.0.1
--- 生成日期: 2013 年 06 月 15 日 20:33
+-- 生成日期: 2013 年 06 月 15 日 22:40
 -- 服务器版本: 5.6.10
 -- PHP 版本: 5.3.15
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `club121_renren_connect` (
   `refresh_token` text NOT NULL,
   `expires_time` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -44,9 +44,9 @@ CREATE TABLE IF NOT EXISTS `club121_renren_connect` (
 CREATE TABLE IF NOT EXISTS `club121_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nickname` text NOT NULL COMMENT '昵称',
-  `renren_id` mediumint(18) NOT NULL,
+  `renren_id` int(18) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

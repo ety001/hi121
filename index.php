@@ -19,6 +19,7 @@ $spConfig = array(
         'engine_path' => SP_PATH.'/Drivers/speedy.php', // 模板引擎主类路径
 	),
 );
-$apiConfig = include_once('./config/apiConfig.php');
 require(SP_PATH."/SpeedPHP.php");
+$apiRedirectURI = 'http://'.$_SERVER["HTTP_HOST"].spUrl('connect','regAccess');
+$apiConfig = include_once('./config/apiConfig.php');
 spRun();

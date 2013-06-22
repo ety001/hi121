@@ -39,13 +39,13 @@ class renren{
 	 * 生成连接平台的按钮
 	 */
 	public function createConnectBtn(){
-		$_SESSION['csrf'] = md5(uniqid(rand(), TRUE)); //CSRF protection
+		$_SESSION['state'] = md5(uniqid(rand(), TRUE)); //CSRF protection
 		$btnHtml = '<a href="'.$this->oauthUrl
 					.'client_id='.$this->clientId
 					.'&redirect_uri='.urlencode($this->redirectUrl)
 					.'&response_type='.$this->responseType
 					.'&scope='.$this->scope
-					.'&csrf='.$_SESSION['csrf']
+					.'&state='.$_SESSION['state']
 					.'"><img src="/public/images/renren_dark.png" /></a>';
 		return $btnHtml;
 	}

@@ -2,26 +2,37 @@
 class connect extends spController
 {
 	function index(){
-		if($_SESSION['uid']!== ''){
-			$this->error('还未登录', spUrl('connect', 'index'));
+		/*TODO 把权限管理用speedphp自带的spacl重写*/
+		if($_SESSION['uid']==''){
+			$this->error('还未登录', spUrl('connect', 'login'));
 			return;
+		} else {
+			$uid = $_SESSION['uid'];
 		}
-		$_SESSION['csrf'] = md5(uniqid(rand(), TRUE)); //CSRF protection
+
 		$userModel = spClass('m_user');
-     	$userInfo = $userModel->find('uid="'.$uid.'"');
-     	$userInfo['csrf'] = $_SESSION['csrf'];
-     	$this->user_info = $userInfo;
+     	$userInfo = $userModel->find('id="'.$uid.'"');
+     	var_dump($userInfo);
+     	if($userInfo['renren_id'] == ''){
+     		import('include/renren/renren.class.php');
+     		$apiClass = spClass('renren');
+     		$renrenHtml = $apiClass->createConnectBtn();
+     		$renrenHtml = '<div>'.$renrenHtml.'</div>';
+     	} else {
+     		$renrenHtml = '<div>已经绑定了人人网帐号</div>';
+     	}
+     	$btnHtml = $renrenHtml;
+     	$this->btn_html = $btnHtml;
      	$this->display('connect/index.html');
 	}
 
 	function login(){
-		global $apiConfig;
-		$_SESSION['csrf'] = md5(uniqid(rand(), TRUE)); //CSRF protection
-		$this->info = array(
-			'state' => $_SESSION['csrf'],
-			'client_id' => $apiConfig['renren']['ClientID'],
-			'redirect_uri' => $apiConfig['renren']['RedirectURI']
-		);
+		import('include/renren/renren.class.php');
+     	$apiClass = spClass('renren');
+     	$renrenHtml = $apiClass->createConnectBtn();
+     	$renrenHtml = '<div>'.$renrenHtml.'</div>';
+     	$btnHtml = $renrenHtml;
+     	$this->btn_html = $btnHtml;
 		$this->display('connect/login.html');
 	}
 
@@ -36,7 +47,7 @@ class connect extends spController
 			$this->error('error api type', spUrl('connect', 'index'));
 			return;
 		}
-		if($_REQUEST['csrf'] == $_SESSION['csrf']) { //CSRF protection
+		if($_REQUEST['state'] == $_SESSION['state']) { //CSRF protection
 			//get the access token
 			import('include/'.$apiType.'/'.$apiType.'.class.php');
 			$apiClass = spClass($apiType);
@@ -45,7 +56,7 @@ class connect extends spController
      		$userModel = spClass('m_user');
      		$userInfo = $userModel->findAll($apiType.'_id="'.$params->user->id.'"');
      		if($userInfo[0]['id']){
-     			$_SESSION['uid'] = $userInfo[0]['id'];
+     			$_SESSION['uid'] = $userInfo[0]['id'];//TODO:是用spAcl重做
      			$this->success('登录成功', spUrl('connect', 'index'));
      			return;
      		} else {

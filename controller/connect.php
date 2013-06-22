@@ -22,17 +22,20 @@ class connect extends spController
 			$this->error('本站只接受第三方帐号注册和登录', spUrl('connect', 'index'));
 			return;
 		}
+		$apiType = $_GET['api_type']?$_GET['api_type']:0;
+		if(!$apiType){
+			$this->error('error api type', spUrl('connect', 'index'));
+			return;
+		}
 		if($_REQUEST['state'] == $_SESSION['state']) { //CSRF protection
-			global $apiConfig;
-			$grant_type="authorization_code";  //支持的授权类型
-			$token_url = "https://graph.renren.com/oauth/token?"
-				. "client_id=" . $apiConfig['renren']['ClientID'] . "&redirect_uri=" . urlencode($apiConfig['renren']['RedirectURI'])
-				. "&client_secret=" . $apiConfig['renren']['SecretKey'] ."&grant_type=" . $grant_type . "&code=" . $code;
-     		$response = @file_get_contents($token_url);
-     		$params = null;
-     		$params = json_decode($response);
+			//get the access token
+			import('include/'.$apiType.'/'.$apiType.'.class.php');
+			$apiClass = spClass($apiType);
+			$tokenUrl = $apiClass->getTokenUrl($code);
+     		$params = $apiClass->getToken($tokenUrl);
+     		//connect the database to check whether the user exists 
      		$userModel = spClass('m_user');
-     		$userInfo = $userModel->findAll('renren_id="'.$params->user->id.'"');
+     		$userInfo = $userModel->findAll($apiType.'_id="'.$params->user->id.'"');
      		if($userInfo[0]['id']){
      			$this->success('登录成功', spUrl('connect', 'index'));
      			return;

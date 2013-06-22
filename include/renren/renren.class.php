@@ -35,7 +35,7 @@ class renren{
 	/*
 	 * 生成获得access_token的地址
 	 */
-	public function getTokenUrl($code=''){
+	private function getTokenUrl($code=''){
 		if(!$code){
 			return false;
 		}
@@ -51,10 +51,11 @@ class renren{
 	/*
 	 * 获得access_token
 	 */
-	public function getToken($tokenUrl=''){
-		if(!$tokenUrl){
+	public function getToken($code=''){
+		if(!$code){
 			return false;
 		}
+		$tokenUrl = $this->getTokenUrl($code);
 		$response = @file_get_contents($tokenUrl);
 		$params = json_decode($response);
 		return $params;

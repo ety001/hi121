@@ -31,8 +31,7 @@ class connect extends spController
 			//get the access token
 			import('include/'.$apiType.'/'.$apiType.'.class.php');
 			$apiClass = spClass($apiType);
-			$tokenUrl = $apiClass->getTokenUrl($code);
-     		$params = $apiClass->getToken($tokenUrl);
+     		$params = $apiClass->getToken($code);
      		//connect the database to check whether the user exists 
      		$userModel = spClass('m_user');
      		$userInfo = $userModel->findAll($apiType.'_id="'.$params->user->id.'"');

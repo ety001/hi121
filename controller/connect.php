@@ -2,14 +2,23 @@
 class connect extends spController
 {
 	function index(){
-		$this->display('connect/index.html');
+		if($_SESSION['uid']!== ''){
+			$this->error('还未登录', spUrl('connect', 'index'));
+			return;
+		}
+		$_SESSION['csrf'] = md5(uniqid(rand(), TRUE)); //CSRF protection
+		$userModel = spClass('m_user');
+     	$userInfo = $userModel->find('uid="'.$uid.'"');
+     	$userInfo['csrf'] = $_SESSION['csrf'];
+     	$this->user_info = $userInfo;
+     	$this->display('connect/index.html');
 	}
 
 	function login(){
 		global $apiConfig;
-		$_SESSION['state'] = md5(uniqid(rand(), TRUE)); //CSRF protection
+		$_SESSION['csrf'] = md5(uniqid(rand(), TRUE)); //CSRF protection
 		$this->info = array(
-			'state' => $_SESSION['state'],
+			'state' => $_SESSION['csrf'],
 			'client_id' => $apiConfig['renren']['ClientID'],
 			'redirect_uri' => $apiConfig['renren']['RedirectURI']
 		);
@@ -27,7 +36,7 @@ class connect extends spController
 			$this->error('error api type', spUrl('connect', 'index'));
 			return;
 		}
-		if($_REQUEST['state'] == $_SESSION['state']) { //CSRF protection
+		if($_REQUEST['csrf'] == $_SESSION['csrf']) { //CSRF protection
 			//get the access token
 			import('include/'.$apiType.'/'.$apiType.'.class.php');
 			$apiClass = spClass($apiType);
@@ -36,6 +45,7 @@ class connect extends spController
      		$userModel = spClass('m_user');
      		$userInfo = $userModel->findAll($apiType.'_id="'.$params->user->id.'"');
      		if($userInfo[0]['id']){
+     			$_SESSION['uid'] = $userInfo[0]['id'];
      			$this->success('登录成功', spUrl('connect', 'index'));
      			return;
      		} else {

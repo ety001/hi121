@@ -19,7 +19,10 @@ class renren{
 	private $decodeFormat;	//decode format
 	private $redirectUrl;	//redirect url
 	private $baseTokenUrl = 'https://graph.renren.com/oauth/token?';	//base token url
-	private $grantType='authorization_code';  //支持的授权类型
+	private $oauthUrl = 'https://graph.renren.com/oauth/authorize?';	//oauth url
+	private $grantType = 'authorization_code';  //支持的授权类型
+	private $responseType = 'code';
+	private $scope = 'read_user_feed admin_page publish_feed read_user_status';
 
 	function __construct(){
 		global $apiConfig;
@@ -30,6 +33,20 @@ class renren{
 		$this->redirectUrl = $apiConfig[self::APITYPE]['RedirectURI'];
 		$this->apiVersion = $apiConfig[self::APITYPE]['apiVersion'];
 		$this->decodeFormat = $apiConfig[self::APITYPE]['decodeFormat'];
+	}
+
+	/*
+	 * 生成连接平台的按钮
+	 */
+	public function createConnectBtn(){
+		$btnHtml = '<a href="'.$this->oauthUrl
+					.'client_id='.$this->clientId
+					.'&redirect_uri='.$this->redirectUrl
+					.'&response_type='.$this->responseType
+					.'&scope='.$this->scope
+					.'&csrf='.$_SESSION['csrf']
+					.'" target="_blank"><img src="/public/images/renren_dark.png" /></a>';
+		return $btnHtml;
 	}
 
 	/*
@@ -61,6 +78,9 @@ class renren{
 		return $params;
 	}
 
+	/*
+	 * 获得人人网状态
+	 */
 	public function getStates($userInfo=array(), $page=1, $count=1 ){
 		if(!$userInfo['uid']){
 			return false;

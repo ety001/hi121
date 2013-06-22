@@ -20,6 +20,6 @@ $spConfig = array(
 	),
 );
 require(SP_PATH."/SpeedPHP.php");
-$apiRedirectURI = 'http://'.$_SERVER["HTTP_HOST"].spUrl('connect','regAccess');
+
 $apiConfig = include_once('./config/apiConfig.php');
 spRun();

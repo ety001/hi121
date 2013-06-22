@@ -5,7 +5,7 @@ return array(
 		'APIKey' => '86fddbfed23b4d93a68fba701a191264',
 		'SecretKey' => '55214f3539444d77a16b03a47fc170f4',
 		'APIURL' => 'http://api.renren.com/restserver.do',
-		'RedirectURI' => $apiRedirectURI,
+		'RedirectURI' => 'http://'.$_SERVER["HTTP_HOST"].spUrl('connect','regAccess',array('api_type'=>'renren')),
 		'APIVersion' => '1.0',
 		'decodeFormat' => 'json'
 		),

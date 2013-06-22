@@ -17,6 +17,7 @@ class renren{
 	private $apiUrl;	//api url address
 	private $apiVersion;	//api version
 	private $decodeFormat;	//decode format
+	private $redirectUrl;	//redirect url
 	private $baseTokenUrl = 'https://graph.renren.com/oauth/token?';	//base token url
 	private $grantType='authorization_code';  //支持的授权类型
 
@@ -26,6 +27,7 @@ class renren{
 		$this->apiKey = $apiConfig[self::APITYPE]['APIKey'];
 		$this->apiSecret = $apiConfig[self::APITYPE]['SecretKey'];
 		$this->apiUrl = $apiConfig[self::APITYPE]['APIURL'];
+		$this->redirectUrl = $apiConfig[self::APITYPE]['RedirectURI'];
 		$this->apiVersion = $apiConfig[self::APITYPE]['apiVersion'];
 		$this->decodeFormat = $apiConfig[self::APITYPE]['decodeFormat'];
 	}
@@ -41,6 +43,7 @@ class renren{
 					.'client_id='.$this->clientId
 					.'&client_secret='.$this->apiSecret
 					.'&grant_type='.$this->grantType
+					.'&redirect_uri='.urlencode($this->redirectUrl)
 					.'&code='.$code;
 		return $tokenUrl;
 	}

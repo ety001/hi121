@@ -60,4 +60,25 @@ class renren{
 		$params = json_decode($response);
 		return $params;
 	}
+
+	public function getStates($userInfo=array(), $page=1, $count=1 ){
+		if(!$userInfo['uid']){
+			return false;
+		} else {
+			$uid = $userInfo['uid'];
+		}
+		$renrenConnectModel = spClass('m_renrenConnect');
+		$res = $renrenConnectModel->find('uid="'.$uid.'"');
+		$accessToken = $res['access_token'];
+
+		$rrConct = spClass('RenrenRestApiService');
+		$apiCommitInfo = array(
+			'v' => $this->apiVersion,
+			'access_token' => $accessToken,
+			'page' => $page,
+			'count' => $count
+		);
+		$result = $rrConct->rr_post_curl('status.gets',$apiCommitInfo);
+		return $result;
+	}
 }
